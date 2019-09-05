@@ -9,12 +9,21 @@ def create_app(config=None):
 
     @app.route('/solve', methods=['POST'])
     def solve():
+        print(f'Request: {request}')
         solver = Solver()
         rack = request.json['rack']
+        selection = request.json['selection']
+        coins = int(request.json['coins'])
+
         wordlist = solver.solve(rack)
-        wordlist.sort(key=len)
+        wordlist.sort(key=lambda x: solver.score_word(x))
         wordlist.reverse()
-        return jsonify({'wordlist': wordlist})
+        # average = sum([solver.score_word(word) for word in wordlist]) / len(wordlist)
+        average = [solver.score_word(word) for word in wordlist][len(wordlist)//2]
+        whee = [ f'{word}-{str(solver.score_word(word))}' for word in wordlist ]
+        winner = selection in wordlist
+        new_coins = coins + 5 if winner else coins - 5
+        return jsonify({'wordlist': whee, 'average': average, 'winner': winner, 'coins': new_coins})
 
     return app
 

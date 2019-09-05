@@ -18,7 +18,9 @@ def browser():
 def test_home_page(browser):
     browser.get('http://localhost:3000')
     assert 'Word Poker' == browser.title
-    header = browser.find_element_by_tag_name('header')
+    header = browser.find_element_by_id('app-name')
+    coins = browser.find_element_by_id('coins')
+    assert coins.text == '100'
     assert 'Word Poker' == header.text
 
 def test_new_cards(browser):
@@ -66,11 +68,29 @@ def test_select_word(browser):
     cards[4].click()
     cards[0].click()
     cards[1].click()
+    selection = browser.find_element_by_id('selection')
+    total = browser.find_element_by_id('total')
+    assert selection.text == 'JAB'
+    assert total.text == '15'
+
+def test_submit_word(browser):
+    browser.get('http://localhost:3000')
+    cards = browser.find_elements_by_class_name('card')
+    cards[0].click()
+    cards[1].click()
+    draw_button = browser.find_element_by_id('draw')
+    draw_button.click()
+    cards[4].click()
+    cards[0].click()
+    cards[1].click()
 
     submit_button = browser.find_element_by_id('submit')
     submit_button.click()
 
     WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'wordlist')))
     wordlist = browser.find_elements_by_class_name('wordlist')
-    expected = 'KIBLAH'
+    coins = browser.find_element_by_id('coins')
+    expected = 'HIJAB-19'
+
+    assert coins.text == '105'
     assert expected == wordlist[0].text
