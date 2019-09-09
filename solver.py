@@ -22,7 +22,7 @@ class Solver:
                 words = anadict[j].split()
                 if words[0] == ana:
                     foundwords.extend(words[1:])
-        return sorted(foundwords)
+        return sorted(set(foundwords))
 
     def score_word(self, word):
         try:

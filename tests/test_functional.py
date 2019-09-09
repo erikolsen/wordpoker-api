@@ -73,6 +73,25 @@ def test_select_word(browser):
     assert selection.text == 'JAB'
     assert total.text == '15'
 
+def test_undo_selected_word(browser):
+    browser.get('http://localhost:3000')
+    cards = browser.find_elements_by_class_name('card')
+    cards[0].click()
+    cards[1].click()
+    draw_button = browser.find_element_by_id('draw')
+    draw_button.click()
+    cards[4].click()
+    cards[0].click()
+    cards[2].click()
+    selection = browser.find_element_by_id('selection')
+    assert selection.text == 'JAH'
+    undo = browser.find_element_by_id('undo')
+    undo.click()
+    cards[1].click()
+    total = browser.find_element_by_id('total')
+    assert selection.text == 'JAB'
+    assert total.text == '15'
+
 def test_submit_word(browser):
     browser.get('http://localhost:3000')
     cards = browser.find_elements_by_class_name('card')
