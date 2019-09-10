@@ -9,9 +9,9 @@ def stat_maker():
     word_list = WordList().words
     return StatMaker(word_list)
 
-def test_deck_combos(stat_maker):
-    print(stat_maker.combinations_for_deck())
-    assert True == False
+# def test_deck_combos(stat_maker):
+    # print(stat_maker.combinations_for_deck())
+    # assert True == False
 
 # def test_total_chars(stat_maker):
     # assert stat_maker.total_chars == 2_439_263

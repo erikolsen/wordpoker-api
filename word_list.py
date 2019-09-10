@@ -8,7 +8,7 @@ class WordList:
 
     @property
     def words(self):
-        f = open('sowpods.txt','r')
+        f = open('../sowpods.txt','r')
         anadict = f.read().split('\n')
         f.close()
         return anadict
