@@ -8,6 +8,10 @@ def create_app(config=None):
     app = Flask(__name__)
     CORS(app)
 
+    @app.route('/')
+    def hello_world():
+        return 'Hello, World!'
+
     @app.route('/solve', methods=['POST'])
     def solve():
         print(f'Request: {request}')
@@ -22,14 +26,13 @@ def create_app(config=None):
         wordlist.reverse()
         # average = sum([solver.score_word(word) for word in wordlist]) / len(wordlist)
         average = [solver.score_word(word) for word in wordlist][len(wordlist)//2]
-        whee = [ f'{word}-{str(solver.score_word(word))}' for word in wordlist ]
+        wordlist_presenter = [ f'{word}-{str(solver.score_word(word))}' for word in wordlist ]
         winner = selection in wordlist
         new_coins = coins + payout.amount(selection, rack)
-        return jsonify({'wordlist': whee, 'average': average, 'winner': winner, 'coins': new_coins})
+        return jsonify({'wordlist': wordlist_presenter, 'average': average, 'winner': winner, 'coins': new_coins})
 
     return app
 
 if __name__ == '__main__':
     app = create_app()
-    app.debug = True
     app.run()

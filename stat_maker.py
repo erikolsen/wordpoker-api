@@ -47,7 +47,9 @@ class StatMaker:
                 # unsolved.append(word)
 
         whee = [solver.score_word(word) for word in joined]
-        print(f'Unsolved: {len(unsolved)}')
-        average = sum(whee) / len(whee)
-        return average #f'{} {}'
+        # print(f'Unsolved: {len(unsolved)}')
+        # average = sum(whee) / len(whee)
+        return whee #f'{} {}'
+
+
 

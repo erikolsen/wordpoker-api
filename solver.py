@@ -9,17 +9,19 @@ scores = {"A": 1, "C": 4, "B": 4, "E": 1, "D": 2, "G": 3,
 
 
 class Solver:
+    def __init__(self, anagram_dictionary=WordList().all):
+        self.anagram_dictionary = anagram_dictionary
+
     def solve(self, string):
-        anadict = WordList().all
         rack = ''.join(sorted(string))
         foundwords = []
         for i in range(2,len(rack)+1):
-            for comb in combinations(rack,i):
-                ana = ''.join(comb)
-                j = bisect_left(anadict, ana)
-                if j == len(anadict):
+            for combo in combinations(rack,i):
+                ana = ''.join(combo)
+                j = bisect_left(self.anagram_dictionary, ana)
+                if j == len(self.anagram_dictionary):
                     continue
-                words = anadict[j].split()
+                words = self.anagram_dictionary[j].split()
                 if words[0] == ana:
                     foundwords.extend(words[1:])
         return sorted(set(foundwords))
