@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS # allow communication with react app
+import json
 from solver import Solver
 from payout import Payout
 import sys
@@ -10,7 +11,14 @@ def create_app(config=None):
 
     @app.route('/')
     def hello_world():
-        return 'Hello, World!'
+        return 'Word Poker!'
+
+    @app.route('/deal')
+    def deal():
+        # with open('mock_deck.json', 'r') as f:
+        with open('deck.json', 'r') as f:
+            deck = json.load(f)
+        return jsonify({'deck': deck})
 
     @app.route('/solve', methods=['POST'])
     def solve():
@@ -24,7 +32,7 @@ def create_app(config=None):
         wordlist = solver.solve(rack)
         wordlist.sort(key=lambda x: solver.score_word(x))
         wordlist.reverse()
-        # average = sum([solver.score_word(word) for word in wordlist]) / len(wordlist)
+
         average = [solver.score_word(word) for word in wordlist][len(wordlist)//2]
         wordlist_presenter = [ f'{word}-{str(solver.score_word(word))}' for word in wordlist ]
         winner = selection in wordlist
